@@ -26,7 +26,7 @@ Email   : tuenhi.n2012@gmail.com
 #define PATH            0
 #define ELLIPSE         1
 
-byte row;
+byte anodelevel;
 byte cube[CUBE_ZSIZE][CUBE_YSIZE];  // cube[8][24]
 byte fb[CUBE_ZSIZE][CUBE_YSIZE];
 
@@ -251,7 +251,7 @@ void folder();
 
 void setup () 
 {
-  row = 0;
+  anodelevel = 0;
    
   pinMode(DATA_Pin, OUTPUT);
   pinMode(CLOCK_Pin, OUTPUT);
@@ -373,10 +373,10 @@ void ICACHE_RAM_ATTR timer1_ISR(void)
     // Cathodes scanning
     for (byte i = 0; i<24; i++)
     {
-      DIY_shiftOut((cube[row][i]));
+      DIY_shiftOut((cube[anodelevel][i]));
     }
     // Layer - Anodes scanning
-    DIY_shiftOut(anode[row]);
+    DIY_shiftOut(anode[anodelevel]);
     
     delayMicroseconds(5);
     digitalWrite(LATCH_Pin, HIGH);
@@ -386,8 +386,8 @@ void ICACHE_RAM_ATTR timer1_ISR(void)
 
     digitalWrite(BLANK_Pin, LOW);
     delayMicroseconds(5);
-    row++;   
-    if (row==8) row=0;
+    anodelevel++;   
+    if (anodelevel==8) anodelevel=0;
     pinMode(BLANK_Pin, OUTPUT);        
     timer1_write(1000);      
 }
